@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const userRoute = require('./routes/user');
+const authRoute = require('./routes/auth');
 
 const app = express();
 
@@ -26,6 +28,10 @@ mongoose.connect(
     console.log('Connected to MongoDB');
   }
 );
+
+// Routes
+app.use('/api/auth', authRoute);
+app.use('/api/user', userRoute);
 
 const PORT = 5000 || process.env.PORT;
 
