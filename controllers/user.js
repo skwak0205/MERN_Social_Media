@@ -53,6 +53,46 @@ const getUser = asyncHandler(async (req, res) => {
 });
 
 // Follow a User
-// Unfollow a User
+const followUser = asyncHandler(async (req, res) => {
+  if (req.body.userId !== req.params.id) {
+    try {
+      const user = await User.findById(req.params.id);
+      const currentUser = await User.findById(req.body.userId);
 
-module.exports = { updateUser, deleteUser, getUser };
+      if (!user.followers.includes(req.body.userId)) {
+        await user.updateOne({ $push: { followers: req.body.userId } });
+        await currentUser.updateOne({ $push: { followings: req.params.id } });
+        res.status(200).json('팔로우 하였습니다.');
+      } else {
+        res.status(403).json('이미 팔로우하였습니다.');
+      }
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  } else {
+    res.status(403).json('본인을 팔로우 할 수 없습니다.');
+  }
+});
+
+// Unfollow a User
+const unfollowUser = asyncHandler(async (req, res) => {
+  if (req.body.userId !== req.params.id) {
+    try {
+      const user = await User.findById(req.params.id);
+      const currentUser = await User.findById(req.body.userId);
+      if (user.followers.includes(req.body.userId)) {
+        await user.updateOne({ $pull: { followers: req.body.userId } });
+        await currentUser.updateOne({ $pull: { followings: req.params.id } });
+        res.status(200).json('팔로우를 취소하였습니다.');
+      } else {
+        res.status(403).json('팔로우하지 않는 회원입니다.');
+      }
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  } else {
+    res.status(403).json('본인을 팔로우 취소 할 수 없습니다.');
+  }
+});
+
+module.exports = { updateUser, deleteUser, getUser, followUser, unfollowUser };
