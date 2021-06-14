@@ -13,6 +13,20 @@ app.use(express.json());
 app.use(helmet());
 app.use(morgan('common'));
 
+// MongoDB 연결
+mongoose.connect(
+  process.env.MONGO_URL,
+  {
+    useNewUrlParser: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+  },
+  () => {
+    console.log('Connected to MongoDB');
+  }
+);
+
 const PORT = 5000 || process.env.PORT;
 
 app.listen(PORT, () => {
