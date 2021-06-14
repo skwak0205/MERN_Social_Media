@@ -41,22 +41,6 @@ const login = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error('이메일 혹은 비밀번호가 틀렸습니다.');
   }
-
-  //   try {
-  //     const user = await User.findOne({ email });
-  //     !user && res.status(404).send('user not found');
-
-  //     const validPassword = await bcrypt.compare(
-  //       req.body.password,
-  //       user.password
-  //     );
-
-  //     !validPassword && res.status(400).json('wrong password');
-
-  //     res.status(200).json(user);
-  //   } catch (err) {
-  //     res.status(500).json(err);
-  //   }
 });
 
 module.exports = { registerUser, login };
