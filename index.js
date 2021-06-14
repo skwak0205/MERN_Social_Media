@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const userRoute = require('./routes/user');
 const authRoute = require('./routes/auth');
+const postRoute = require('./routes/post');
 
 const app = express();
 
@@ -32,6 +33,7 @@ mongoose.connect(
 // Routes
 app.use('/api/auth', authRoute);
 app.use('/api/user', userRoute);
+app.use('/api/post', postRoute);
 
 const PORT = 5000 || process.env.PORT;
 
